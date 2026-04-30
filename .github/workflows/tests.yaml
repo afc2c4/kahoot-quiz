@@ -1,0 +1,42 @@
+name: Run all tests
+
+on: push
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+  APP_URL: ${{ secrets.APP_URL }}
+  VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+  VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+  VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+  VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+  VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+  VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+  NODE_ENV: ${{ secrets.NODE_ENV }}
+
+jobs:
+  tests:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+          - os: windows-latest
+          - os: macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Install node modules
+        run: npm ci
+
+      - name: Enable Safari Driver
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: sudo safaridriver --enable
+
+      - name: Run all tests
+        run: npm test

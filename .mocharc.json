@@ -1,0 +1,11 @@
+{
+  "require": [
+    "tsconfig-paths/register",
+    "dotenv/config",
+    "tests/setup.ts"
+  ],
+  "spec": ["tests/**/*.spec.ts", "tests/**/*.spec.tsx"],
+  "import": "tsx",
+  "timeout": 60000,
+  "exit": true
+}

@@ -9,6 +9,13 @@
       "DOM",
       "DOM.Iterable"
     ],
+    "types": [
+	"node",
+	"chai",
+	"mocha",
+	"sinon",
+    "selenium-webdriver"
+    ],
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "isolatedModules": true,
