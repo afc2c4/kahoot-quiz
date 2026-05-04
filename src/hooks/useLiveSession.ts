@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { firestoreModule } from '../lib/firestoreModule';
 import { db } from '../lib/firebaseClient';
 
 export function useLiveSession(sessionId: string) {
@@ -8,7 +8,7 @@ export function useLiveSession(sessionId: string) {
 
   useEffect(() => {
     if (!sessionId) return;
-    const unsub = onSnapshot(doc(db, 'liveSessions', sessionId), (doc) => {
+    const unsub = firestoreModule.onSnapshot(firestoreModule.doc(db, 'liveSessions', sessionId), (doc) => {
       setSession({ id: doc.id, ...doc.data() });
       setLoading(false);
     });

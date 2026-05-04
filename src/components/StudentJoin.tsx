@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { firestoreModule } from '../lib/firestoreModule';
 import { db } from '../lib/firebaseClient';
 
 export default function StudentJoin({ onJoin }: { onJoin: (pin: string, studentId: string) => void }) {
@@ -15,12 +15,12 @@ export default function StudentJoin({ onJoin }: { onJoin: (pin: string, studentI
     setError('');
     
     // Verifica se a sessão existe
-    const sessionRef = doc(db, 'liveSessions', pin);
-    const sessionSnap = await getDoc(sessionRef);
+    const sessionRef = firestoreModule.doc(db, 'liveSessions', pin);
+    const sessionSnap = await firestoreModule.getDoc(sessionRef);
 
     if (sessionSnap.exists()) {
       const studentId = 'student-' + Math.floor(Math.random() * 100000);
-      await setDoc(doc(db, `liveSessions/${pin}/participants`, studentId), {
+      await firestoreModule.setDoc(firestoreModule.doc(db, `liveSessions/${pin}/participants`, studentId), {
         name: name,
         score: 0
       });

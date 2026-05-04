@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db, auth } from '../lib/firebaseClient';
-import { collection, addDoc, getDocs, query, where, onSnapshot, doc, getDoc, updateDoc, setDoc, deleteDoc } from 'firebase/firestore';
+import { firestoreModule } from '../lib/firestoreModule';
+const { collection, addDoc, getDocs, query, where, onSnapshot, doc, getDoc, updateDoc, setDoc, deleteDoc } = firestoreModule;
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import QuestionManager from './QuestionManager';
 

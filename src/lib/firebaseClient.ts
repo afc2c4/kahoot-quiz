@@ -4,16 +4,23 @@ import { getFirestore } from 'firebase/firestore';
 
 // Note: In development in AI Studio, you may need to populate these in 
 // the Secrets panel to avoid exposing them in source files.
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+const getEnv = (key: string) => {
+  // @ts-ignore
+  if (typeof import.meta !== 'undefined' && import.meta.env) return import.meta.env[key];
+  if (typeof process !== 'undefined' && process.env) return process.env[key];
+  return undefined;
 };
 
-const databaseId = import.meta.env.VITE_FIREBASE_FIRESTORE_DATABASE_ID;
+const firebaseConfig = {
+  apiKey: getEnv('VITE_FIREBASE_API_KEY'),
+  authDomain: getEnv('VITE_FIREBASE_AUTH_DOMAIN'),
+  projectId: getEnv('VITE_FIREBASE_PROJECT_ID'),
+  storageBucket: getEnv('VITE_FIREBASE_STORAGE_BUCKET'),
+  messagingSenderId: getEnv('VITE_FIREBASE_MESSAGING_SENDER_ID'),
+  appId: getEnv('VITE_FIREBASE_APP_ID'),
+};
+
+const databaseId = getEnv('VITE_FIREBASE_FIRESTORE_DATABASE_ID');
 
 // Help designers/developers find where to put the keys
 if (!firebaseConfig.apiKey) {
