@@ -9,6 +9,14 @@
       "DOM",
       "DOM.Iterable"
     ],
+    "types": [
+	"node",
+	"chai",
+	"mocha",
+	"sinon",
+    "selenium-webdriver",
+    "bcryptjs"
+    ],
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "isolatedModules": true,

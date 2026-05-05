@@ -1,28 +1,19 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { getFirebaseConfig } from './firebaseConfig';
 
-// Note: In development in AI Studio, you may need to populate these in 
-// the Secrets panel to avoid exposing them in source files.
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-};
+const { firebaseConfig, databaseId } = getFirebaseConfig();
+const app = getApps().length === 0
+  ? initializeApp(firebaseConfig)
+  : getApp();
 
-const databaseId = import.meta.env.VITE_FIREBASE_FIRESTORE_DATABASE_ID;
-
-// Help designers/developers find where to put the keys
-if (!firebaseConfig.apiKey) {
-  console.warn("Firebase API Key is missing. Please configure VITE_FIREBASE_API_KEY in your environment/secrets.");
-}
-
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, databaseId); /* CRITICAL: The app will break without this line */
+export const db = getFirestore(app, databaseId);
 export const auth = getAuth(app);
+
+if (process.env.NODE_ENV === 'test') {
+  connectFirestoreEmulator(db, 'localhost', 8080);
+}
 
 export enum OperationType {
   CREATE = 'create',
